@@ -1,0 +1,35 @@
+package com.eduai.schoolmanagement.controller;
+
+import com.eduai.schoolmanagement.entity.AccessCode;
+import com.eduai.schoolmanagement.service.AccessCodeService;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
+
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(AccessCodeController.class)
+class AccessCodeControllerIT {
+    @Autowired
+    private MockMvc mockMvc;
+    @MockBean
+    private AccessCodeService accessCodeService;
+
+    @Test
+    @DisplayName("should return all access codes")
+    void getAllAccessCodes() throws Exception {
+        AccessCode code = Mockito.mock(AccessCode.class);
+        when(accessCodeService.getAllAccessCodes()).thenReturn(List.of(code));
+        mockMvc.perform(get("/api/access-codes").accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk()); // Add more assertions for content as needed
+    }
+}
